@@ -14,6 +14,65 @@
         $(function(){
           $("#importPart").load("navbar");
         });
+
+        const showBins = () => {
+            const options = {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            };
+            fetch('/administrator/showBins', options)
+            .then((res) => {
+               res.json().then(json => {
+                    buildBinsTable(json);
+               })
+            });
+        } //end btnClick function
+
+        const buildBinsTable = (bins) => {
+            if( document.getElementById('bins-table') != null){
+                return;
+            }
+            var btn = document.createElement('button');
+            btn.innerHTML = 'close table';
+            btn.onclick = closeBinsTable;
+            btn.setAttribute('id', 'closeBinsBTN');
+            document.getElementById('administrator-menu').appendChild(btn);
+            var table = document.createElement('table');
+            table.setAttribute('class', 'table');
+            table.setAttribute('id', 'bins-table');
+            let names = ['Id', 'Latitude', 'Longitude'];
+            for(let r = 0; r <= bins.bins.length; r++) {
+                if(r === 0) {
+                    var row = table.insertRow();
+                    for(let i = 0; i < names.length; i++){
+                        var cell = row.insertCell();
+                        cell.setAttribute('scope', 'col');
+                        cell.appendChild(document.createTextNode(names[i]));
+                    }
+                } else {
+                        var row = table.insertRow();
+                        var cell = row.insertCell();
+                        cell.setAttribute('scope', 'row');
+                        cell.appendChild(document.createTextNode(bins.bins[r - 1].id));
+                        var cell = row.insertCell();
+                        //cell.setAttribute('scope', 'row');
+                        cell.appendChild(document.createTextNode(bins.bins[r - 1].latitude));
+                        var cell = row.insertCell();
+                        //cell.setAttribute('scope', 'row');
+                        cell.appendChild(document.createTextNode(bins.bins[r - 1].longitude));
+                    }
+            }
+            var theTable = document.getElementById('bins').appendChild(table);
+        } //end build Bins table
+
+        const closeBinsTable = () => {
+            document.getElementById('bins-table').remove();
+            document.getElementById('closeBinsBTN').remove();
+        } // end close table function
+
+
     </script>
 
     <title>Garbage System Application</title>
@@ -23,10 +82,19 @@
 <br>
 
 <div id="app" class="jumbotron">
-    <p class="lead" th:text="${User.FirstName + ' ' + User.LastName + ' Welcome back to the application!'}"/>
+    <p class="lead" >
+        <strong th:text="${User.FirstName + ' ' + User.LastName }"/> Welcome back to the application!
+    </p>
     <hr class="my-4">
-    <p class="lead">This is administrator page</p>
-    <p class="lead" th:text="${User.Id}"></p>
+    <div id="administrator-menu">
+        <ul class = "nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" style="cursor:pointer;" onclick="showBins()">show all bins</a>
+            </li>
+        </ul>
+    </div>
+
+    <div id="bins"></div>
 </div>
 
 

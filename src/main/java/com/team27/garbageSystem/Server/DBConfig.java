@@ -1,12 +1,17 @@
 package com.team27.garbageSystem.Server;
 
 import com.team27.garbageSystem.Entities.Administrator;
+import com.team27.garbageSystem.Entities.GarbageBin;
 import com.team27.garbageSystem.Repository.AdministratorRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 @EnableMongoRepositories(basePackages = {"com.team27"})
 @Configuration
@@ -21,6 +26,22 @@ public class DBConfig {
 
     public DBConfig(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
+    }
+
+    @Bean
+    public void ParseBinsAndAddToDB(){
+        try{
+            List<String> lines = Files.readAllLines(Paths.get("src//main//resources//static//garbage-bins.csv"));
+            mongoTemplate.dropCollection(GarbageBin.class); //clean GarbageBin collection
+            for(int i = 1; i < lines.size(); i++){
+                String [] result = lines.get(i).split(",");
+                mongoTemplate.save(new GarbageBin(i, Double.parseDouble(result[2]), Double.parseDouble(result[3])));
+            }
+            mongoTemplate.findAll(GarbageBin.class).forEach(System.out::println);
+        } catch(Exception er){
+            System.out.println(er.getMessage());
+        }
+
     }
 
     @Bean

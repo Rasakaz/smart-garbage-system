@@ -39,10 +39,8 @@ public class LoginController {
     public String loginCheck(@RequestBody Map<String, String> parameters) {
         sessionUser = null;
         if(parameters.get("UserType").equals("admin")){
-            System.out.println("login check");
             List<Administrator> adminUser = checkAdministratorDetails(parameters);
             if(adminUser != null && adminUser.size() == 1){
-                System.out.println("inside the if");
                 sessionUser = new Administrator(
                         adminUser.get(0).getId(),
                         adminUser.get(0).getUserName(),
@@ -53,7 +51,6 @@ public class LoginController {
                         adminUser.get(0).getSalary(),
                         adminUser.get(0).getSeniority()
                 );
-                System.out.println("in in in");
                 //return a response fail/success
                 return "success";
             }
@@ -64,7 +61,6 @@ public class LoginController {
     }
 
     private List<Administrator> checkAdministratorDetails(Map<String, String> parameters) {
-        System.out.println("inside check Administrator!!");
         return mongoTemplate.find(new Query().addCriteria(
                 new Criteria().andOperator(Criteria.where("UserName")
                                 .is(parameters.get("UserName")),
