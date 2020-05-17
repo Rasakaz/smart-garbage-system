@@ -26,11 +26,5 @@ pipeline {
                 sh './jenkins/scripts/deliver.sh'
             }
         }
-
-        stage('Spring run') {
-            steps {
-                sh 'mvn spring-boot:run'
-            }
-        }
     }
 }
