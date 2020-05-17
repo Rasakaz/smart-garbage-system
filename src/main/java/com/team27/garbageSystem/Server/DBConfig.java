@@ -2,6 +2,7 @@ package com.team27.garbageSystem.Server;
 
 import com.team27.garbageSystem.Entities.Administrator;
 import com.team27.garbageSystem.Entities.GarbageBin;
+import com.team27.garbageSystem.Entities.Worker;
 import com.team27.garbageSystem.Repository.AdministratorRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +30,57 @@ public class DBConfig {
     }
 
     @Bean
-    public void ParseBinsAndAddToDB(){
+    public void InjectToDB() {
+        InjectAdministrators();
+        InjectWorkersToDB();
+        ParseBinsAndAddToDB();
+    }
+
+    private void InjectWorkersToDB() {
+        mongoTemplate.dropCollection(Worker.class);//clean workers collection before inject
+
+        //inject workers to DB
+        mongoTemplate.save(new Worker(
+                "worker1",
+                "1234worker1",
+                "Liam",
+                "Ava",
+                "Worker",
+                6500.0,
+                (float) 1.5), "Workers");
+
+        mongoTemplate.save(new Worker(
+                "worker2",
+                "1234worker2",
+                "Thomas",
+                "Harry",
+                "Worker",
+                7500.0,
+                (float) 3.1), "Workers");
+
+        mongoTemplate.save(new Worker(
+                "worker3",
+                "1234worker3",
+                "Robers",
+                "Oscar",
+                "Worker",
+                5500.0,
+                (float) 0.3), "Workers");
+
+        mongoTemplate.save(new Worker(
+                "worker4",
+                "1234worker4",
+                "Joseph",
+                "James",
+                "Worker",
+                6350.0,
+                (float) 0.9), "Workers");
+
+        mongoTemplate.findAll(Worker.class).forEach(System.out::println);
+
+    }
+
+    private void ParseBinsAndAddToDB(){
         try{
             List<String> lines = Files.readAllLines(Paths.get("src//main//resources//static//garbage-bins.csv"));
             mongoTemplate.dropCollection(GarbageBin.class); //clean GarbageBin collection
@@ -41,58 +92,50 @@ public class DBConfig {
         } catch(Exception er){
             System.out.println(er.getMessage());
         }
-
     }
 
-    @Bean
-    CommandLineRunner commandLineRunner(AdministratorRepository administratorRepository){
-        return new CommandLineRunner() {
-            @Override
-            public void run(String... args) throws Exception {
-                // first clean the repository
-                mongoTemplate.dropCollection(Administrator.class);
-                // inject to mongodb the administrators
-                mongoTemplate.save(new Administrator(
-                        "admin1",
-                        "1234admin1",
-                        "Ofir",
-                        "Haim",
-                        "Admin",
-                        16500,
-                        (float) 1.5), "Administrators");
+    private void InjectAdministrators(){
+        mongoTemplate.dropCollection(Administrator.class);
+        // inject to mongodb the administrators
+        mongoTemplate.save(new Administrator(
+                "admin1",
+                "1234admin1",
+                "Ofir",
+                "Haim",
+                "Admin",
+                16500,
+                (float) 1.5), "Administrators");
 
 
-                mongoTemplate.save(new Administrator(
-                        "admin2",
-                        "1234admin2",
-                        "Yaakov",
-                        "Levi",
-                        "Admin",
-                        16500,
-                        (float) 1.5), "Administrators");
+        mongoTemplate.save(new Administrator(
+                "admin2",
+                "1234admin2",
+                "Yaakov",
+                "Levi",
+                "Admin",
+                16500,
+                (float) 1.5), "Administrators");
 
-                mongoTemplate.save(new Administrator(
-                        "admin3",
-                        "1234admin3",
-                        "Som",
-                        "Sansu",
-                        "Admin",
-                        11150,
-                        (float) 0.95), "Administrators");
+        mongoTemplate.save(new Administrator(
+                "admin3",
+                "1234admin3",
+                "Som",
+                "Sansu",
+                "Admin",
+                11150,
+                (float) 0.95), "Administrators");
 
-                mongoTemplate.save(new Administrator(
-                        "admin4",
-                        "1234admin4",
-                        "Fedu",
-                        "Bout",
-                        "Admin",
-                        9500,
-                        (float) 0.1), "Administrators");
+        mongoTemplate.save(new Administrator(
+                "admin4",
+                "1234admin4",
+                "Fedu",
+                "Bout",
+                "Admin",
+                9500,
+                (float) 0.1), "Administrators");
 
 
-                // pull all the administrators that injected to check correct
-                mongoTemplate.findAll(Administrator.class).forEach(System.out::println);
-            }//end run
-        };//end return
-    }//end CommandLine function
+        // pull all the administrators that injected to check correct
+        mongoTemplate.findAll(Administrator.class).forEach(System.out::println);
+    }
 }

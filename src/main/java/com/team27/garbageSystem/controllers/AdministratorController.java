@@ -1,6 +1,7 @@
 package com.team27.garbageSystem.controllers;
 
 import com.team27.garbageSystem.Entities.GarbageBin;
+import com.team27.garbageSystem.Entities.Worker;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +29,15 @@ public class AdministratorController {
         List<GarbageBin> bins = new ArrayList<>(mongoTemplate.findAll(GarbageBin.class));
         Map<String, List<GarbageBin>> res = new HashMap<>();
         res.put("bins",bins);
+        return res;
+    }
+
+    @RequestMapping(value = "/administrator/showWorkers", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, List<Worker>> getAllWorkers(){
+        List<Worker> workers = new ArrayList<>(mongoTemplate.findAll(Worker.class));
+        Map<String, List<Worker>> res = new HashMap<>();
+        res.put("workers",workers);
         return res;
     }
 }

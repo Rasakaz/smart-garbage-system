@@ -8,7 +8,7 @@ public class Administrator extends User {
     private Double Salary;
     private Float Seniority;
 
-    public Administrator () {}
+    public Administrator () {} //empty c'tor
 
     public Administrator(String userName, String password, String firstName, String lastName, String permission, double salary, float seniority) {
         super(userName, password, firstName, lastName, permission);
