@@ -24,7 +24,6 @@ pipeline {
                 sh 'mvn spring-boot:run'
             }
         }
-    }
     
     post {
         success {
