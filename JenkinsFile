@@ -11,10 +11,29 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
+        
+       stage('Testing Stage') {
+
+            steps{
+                    sh 'mvn test'
+            }
+        }
+        
         stage('Run') {
             steps {
                 sh 'mvn spring-boot:run'
             }
         }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline run successfuly!'
+        }
+        
+        failure {
+           mail bcc: '', body: "<b>Example</b><br>\n\<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "nivaz@ac.sce.ac.il";
+        }
+    
     }
 }
