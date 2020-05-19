@@ -24,15 +24,5 @@ pipeline {
                 sh 'mvn spring-boot:run'
             }
         }
-    
-    post {
-        success {
-            echo 'Pipeline run successfuly!'
-        }
         
-        failure {
-            mail: bbc: '', body: '''job failed''',
-               cc: '', from: '', replayTo: '', subject: 'Jenkins Job', to: 'nivaz@ac.sce.ac.il'
-        }
-    }
 }
