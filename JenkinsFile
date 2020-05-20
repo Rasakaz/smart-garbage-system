@@ -6,7 +6,6 @@ pipeline {
         }
     }
         stages {
-              emailext body: 'jenkins start', subject: 'start jenkins', to: 'nivaz@ac.sce.ac.il'
               stage('Build') {
                 steps {
                     sh 'mvn -B -DskipTests clean package'
