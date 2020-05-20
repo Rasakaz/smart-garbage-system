@@ -27,14 +27,18 @@ public class DBConfig {
 
     public DBConfig(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
-    }
-
-    @Bean
-    public void InjectToDB() {
         InjectAdministrators();
         InjectWorkersToDB();
         ParseBinsAndAddToDB();
+    
     }
+
+//     @Bean
+//     public void InjectToDB() {
+//         InjectAdministrators();
+//         InjectWorkersToDB();
+//         ParseBinsAndAddToDB();
+//     }
 
     private void InjectWorkersToDB() {
         mongoTemplate.dropCollection(Worker.class);//clean workers collection before inject
