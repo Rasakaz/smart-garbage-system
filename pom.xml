@@ -35,8 +35,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-<<<<<<< HEAD
-=======
+
 		
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
@@ -49,7 +48,6 @@
 			    </exclusion>
 			</exclusions>
 		</dependency>
->>>>>>> 0dad265219a52063ac8de8db43ac1492a13948d9
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
