@@ -5,18 +5,23 @@ pipeline {
             args '-v /root/.m2:/root/.m2'
         }
     }
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
+    try {
+        emailext body: 'jenkins start', subject: 'start jenkins', to: 'nivaz@ac.sce.ac.il'
+        stages {
+            stage('Build') {
+                steps {
+                    sh 'mvn -B -DskipTests clean package'
+                }
             }
-        }
-        
-       stage('Testing Stage') {
 
-            steps{
-                    sh 'mvn test'
+           stage('Testing Stage') {
+
+                steps{
+                        sh 'mvn test'
+                }
             }
-        }
+       }
+   } catch(err) {
+        emailext body: "${err}", subject: 'error jenkins', to: 'nivaz@ac.sce.ac.il'
    }
 }
