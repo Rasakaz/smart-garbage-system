@@ -15,26 +15,31 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @EnableMongoRepositories(basePackages = {"com.team27"})
-@Configuration
+//@Configuration
 public class DBConfig {
 /*
     this class is invoke each time when the application start up, and will inject all the
     data to the data base.
  */
 
-    // !!!!!! CHECK THE OPTION TO WORK WITH MongoTemplate !!!!! ~!~!!~!~!~!~~~!
     private final MongoTemplate mongoTemplate;
 
     public DBConfig(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
-    }
 
-    @Bean
-    public void InjectToDB() {
+        this.mongoTemplate = mongoTemplate;
         InjectAdministrators();
         InjectWorkersToDB();
         ParseBinsAndAddToDB();
+
+
     }
+
+//    @Bean
+//    public void InjectToDB() {
+//        InjectAdministrators();
+//        InjectWorkersToDB();
+//        ParseBinsAndAddToDB();
+//    }
 
     private void InjectWorkersToDB() {
         mongoTemplate.dropCollection(Worker.class);//clean workers collection before inject

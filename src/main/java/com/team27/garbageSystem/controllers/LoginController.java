@@ -15,12 +15,15 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    private final MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
     private static User sessionUser = null; //session user
+
 
     public LoginController(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
+
+    public LoginController() {}
 
     @GetMapping("/login")
     public String login() { return "login"; }
