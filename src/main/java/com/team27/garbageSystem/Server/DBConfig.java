@@ -14,8 +14,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+<<<<<<< HEAD
 @EnableMongoRepositories(basePackages = {"com.team27"})
 //@Configuration
+=======
+// @EnableMongoRepositories(basePackages = {"com.team27"})
+// @Configuration
+>>>>>>> 0dad265219a52063ac8de8db43ac1492a13948d9
 public class DBConfig {
 /*
     this class is invoke each time when the application start up, and will inject all the
@@ -25,11 +30,15 @@ public class DBConfig {
     private final MongoTemplate mongoTemplate;
 
     public DBConfig(MongoTemplate mongoTemplate) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0dad265219a52063ac8de8db43ac1492a13948d9
         this.mongoTemplate = mongoTemplate;
         InjectAdministrators();
         InjectWorkersToDB();
         ParseBinsAndAddToDB();
+<<<<<<< HEAD
 
 
     }
@@ -40,6 +49,17 @@ public class DBConfig {
 //        InjectWorkersToDB();
 //        ParseBinsAndAddToDB();
 //    }
+=======
+    
+    }
+
+//     @Bean
+//     public void InjectToDB() {
+//         InjectAdministrators();
+//         InjectWorkersToDB();
+//         ParseBinsAndAddToDB();
+//     }
+>>>>>>> 0dad265219a52063ac8de8db43ac1492a13948d9
 
     private void InjectWorkersToDB() {
         mongoTemplate.dropCollection(Worker.class);//clean workers collection before inject

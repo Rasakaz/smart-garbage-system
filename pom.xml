@@ -21,6 +21,12 @@
 
 	<dependencies>
 		<dependency>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-surefire-plugin</artifactId>
+		    <version>2.22.2</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
@@ -29,10 +35,31 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+<<<<<<< HEAD
+=======
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter</artifactId>
+		    <version>2.2.7.RELEASE</version>
+			 <exclusions>
+			    <exclusion>
+			      <groupId>org.springframework.boot</groupId>
+			      <artifactId>spring-boot-starter-logging</artifactId>
+			    </exclusion>
+			</exclusions>
+		</dependency>
+>>>>>>> 0dad265219a52063ac8de8db43ac1492a13948d9
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			 <exclusions>
+			    <exclusion>
+			      <groupId>org.springframework.boot</groupId>
+			      <artifactId>spring-boot-starter-logging</artifactId>
+			    </exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -63,10 +90,28 @@
 
 	<build>
 		<plugins>
+			
+			<plugin>
+				  <groupId>org.apache.maven.plugins</groupId>
+				  <artifactId>maven-surefire-plugin</artifactId>
+				  <version>2.22.2</version>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			
+			<plugin>
+				    <groupId>org.apache.maven.plugins</groupId>
+				    <artifactId>maven-compiler-plugin</artifactId>
+				    <version>3.8.1</version>
+				    <configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				    </configuration>
+       			 </plugin>
+		
 		</plugins>
 	</build>
 
