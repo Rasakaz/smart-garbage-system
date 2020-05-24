@@ -1,0 +1,102 @@
+<!doctype html>
+<!--<html lang="en">-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+    <script>
+        var userbtn = "";
+        var userSession = "";
+
+        $(function(){
+          $("#importPart").load("navbar");
+        });
+
+        const chooseClick = (type) => {
+           if(document.getElementById(userbtn)) {
+                document.getElementById(userbtn).style.backgroundColor = "rgb(233,236,239)";
+                document.getElementById(userbtn).style.color = "rgb(108,117,125)";
+           }
+            userbtn = type + '-btn';
+            document.getElementById(userbtn).style.backgroundColor = "rgb(108,117,125)";
+            document.getElementById(userbtn).style.color = "rgb(255,255,255)";
+        }
+
+        const login = () => {
+            if(userbtn === "" || document.getElementById("uname").value === "" || document.getElementById("password").value === "") {
+                window.alert("please make sure you choose type and enter your details !");
+            } else {
+                const user = {
+                    UserType: userbtn.slice(0, userbtn.indexOf('-')),
+                    UserName:  document.getElementById("uname").value,
+                    Password: document.getElementById("password").value
+                };
+
+
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+
+                    body: JSON.stringify(user)
+                };
+                fetch('login/checkDetails', options)
+                .then((res) => {
+                //return a response fail/success
+                   // console.log(res.body);
+                   window.location.href = '/administrator';
+                });
+            }
+
+
+
+        }
+    </script>
+
+    <title>Garbage System Application</title>
+</head>
+<body>
+<div id="importPart"></div>
+<br>
+<div id="app" class="jumbotron">
+    <p class="lead">Please choose user type</p>
+    <button id="admin-btn" type="button" class="btn btn-outline-secondary" onclick="chooseClick('admin')">Admin</button>
+    <button id="worker-btn" type="button" class="btn btn-outline-secondary" onclick="chooseClick('worker')">Worker</button>
+    <!--    <button type="button" class="btn btn-outline-secondary">Secondary</button>-->
+
+    <hr class="my-4">
+    <p class="lead">Please enter your user name and password</p>
+    <form>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">User name:</span>
+            </div>
+            <input type="text" id="uname" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Password: </span>
+            </div>
+            <input  type="password" id="password"  class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/>
+        </div>
+        <button id="admin-btn" type="button" class="btn btn-outline-secondary" onclick="login()">Login</button>
+    </form>
+
+
+
+</div>
+
+
+</body>
+</html>

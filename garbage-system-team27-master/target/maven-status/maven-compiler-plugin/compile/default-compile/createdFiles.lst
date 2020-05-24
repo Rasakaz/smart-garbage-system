@@ -1,0 +1,15 @@
+com\team27\garbageSystem\controllers\LoginController.class
+com\team27\garbageSystem\GarbageSystemApplication.class
+com\team27\garbageSystem\ServletInitializer.class
+com\team27\garbageSystem\controllers\ContactController.class
+com\team27\garbageSystem\Models\ServiceResponse.class
+com\team27\garbageSystem\controllers\AdministratorController.class
+com\team27\garbageSystem\Server\DBConfig.class
+com\team27\garbageSystem\Repository\AdministratorRepository.class
+com\team27\garbageSystem\Entities\User.class
+com\team27\garbageSystem\Entities\Administrator.class
+com\team27\garbageSystem\controllers\HomeController.class
+com\team27\garbageSystem\controllers\AboutController.class
+com\team27\garbageSystem\Entities\GarbageBin.class
+com\team27\garbageSystem\Entities\Worker.class
+com\team27\garbageSystem\controllers\ErrorController.class
