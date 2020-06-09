@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!--leaflet css -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+    <!--Leaflet script -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
+    <!--    bootstrap scripts-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
+    <script>
+        $(function(){
+          $("#importPart").load("navbar");
+        });
+        var Route;
+        var Streets;
+        var marker;
+        var map;
+        const showTruckRoute = () => {
+            if(Route != null){
+                setTheTruckOnMap(Route);
+                return;
+            }
+            const options = {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            };
+            fetch('/worker/showTruckRoute', options)
+            .then((res) => {
+               res.json().then(json => {
+                   if(json.status == "success") {
+                        Route = json.data;
+                        setTheTruckOnMap(Route);
+                   }
+               })
+            });
+        }//end show truck and route function
+
+
+
+        const setTheTruckOnMap = (route) => {
+            if(document.getElementById('show-map') != null) {
+                document.getElementById('show-truck-route').style.fontWeight = 'normal';
+                closeDiv('show-map', 'divDetails', 'tableDiv');
+                return;
+            }
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = String(today.getFullYear());
+            today = dd + '/' + mm + '/' + yyyy;
+
+            document.getElementById('show-truck-route').style.fontWeight = 'bold';
+            var divDetails = document.createElement('p');
+            divDetails.setAttribute('id', 'divDetails');
+            divDetails.innerHTML =  today + "<br />" + "Truck number: " + route.truckNumber + "<br />" + "Line number: " + route.route.lineNumber;
+            var divMap = document.createElement('Div');
+            divMap.setAttribute('id', 'show-map');
+            divMap.style.height = "400px"; // setting the height of the map
+            divMap.style.width = "60vw"; // setting the width of the map
+
+            const theDetails = document.getElementById('route').appendChild(divDetails);
+            const theMap = document.getElementById('route-map').appendChild(divMap);
+            map = L.map('show-map').setView([31.246856, 34.795075], 12);
+            const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+            const tiles = L.tileLayer(tileUrl, {attribution});
+            tiles.addTo(map);
+            route.route.lineBins.forEach((bin) => {
+                L.marker([bin.longitude, bin.latitude]).addTo(map);
+            });
+
+            if(getLen(Streets) === 0) {
+                parseGeoToAddress(route.route.lineBins).
+                then(res => {
+                   buildTable(res);
+                }).
+                catch(err => console.error(err));
+            } else {
+                buildTable(Streets);
+            }
+        }//end set the truck on map
+
+        //function that get an object and return its length
+        const getLen = (obj) => {
+            var count = 0;
+            for(let key in obj){
+                count++;
+            }
+            return count;
+        }
+
+        const buildTable = (streets) => {
+            Streets = streets;
+            var table = document.createElement('table');
+            var tableDiv = document.createElement('Div');
+            tableDiv.setAttribute('id', 'tableDiv');
+            tableDiv.setAttribute('class', 'table-wrapper-scroll-y my-custom-scrollbar');
+            table.setAttribute('class', 'table');
+            table.setAttribute('id', 'table');
+            let names = ['Street', 'Bin'];
+            for(let r = 0; r <= getLen(streets); r++){
+                if(r == 0) {
+                    var row = table.insertRow();
+                    for(let i = 0; i < names.length; i++) {
+                        var cell = row.insertCell();
+                        cell.setAttribute('scope', 'col');
+                        cell.appendChild(document.createTextNode(names[i]));
+                    }
+                } else {
+                    var row = table.insertRow();
+                    var cell = row.insertCell();
+                    cell.setAttribute('scope', 'row');
+                    cell.setAttribute('onclick', 'showMarker(' + streets[r-1].key[0] + ', ' + streets[r-1].key[1] + ', \"' + streets[r-1].value + '\");');
+                    cell.style.cursor = 'pointer';
+                    cell.appendChild(document.createTextNode(streets[r-1].value));
+                    var cell = row.insertCell();
+                    cell.appendChild(document.createTextNode(r));
+                }
+            }
+            tableDiv.style.width = "40vw";
+            tableDiv.style.maxHeight = "400px";
+            tableDiv.style.overflow = "auto";
+            tableDiv.appendChild(table);
+            var theTable = document.getElementById('route-map').appendChild(tableDiv);
+
+        }//end build table function
+
+        const showMarker = (lon, lat, street) => {
+            L.marker([lon, lat]).addTo(map)
+                .bindPopup(street)
+                .openPopup();
+        }
+
+        const sleep = () => {
+            setTimeout(function(){}, 1500);
+        }
+
+        async function parseGeoToAddress(bins){
+            var load = document.createElement('p');
+            load.innerHTML = "Loading streets ....";
+            var tableDiv = document.createElement('Div');
+            tableDiv.style.width = "40vw";
+            tableDiv.style.maxHeight = "400px";
+            tableDiv.appendChild(load);
+            var theTable = document.getElementById('route-map').appendChild(tableDiv);
+
+
+            const url = 'https://nominatim.openstreetmap.org/reverse?format=geojson';
+            let streets = [];
+            for(b of bins){
+                 sleep();
+                 let res = await fetch(url + "&lat=" + b.longitude + "&lon=" + b.latitude);
+                 let json = await res.json();
+                 streets.push({key: [b.longitude, b.latitude],
+                 value: json.features[0].properties.display_name.replace(", no", "").replace(", Be'er Sheva Innovation District", "").replace('"', "")});
+            }
+            theTable.remove();
+            return streets;
+        }
+
+        const closeDiv = (idMap, idp, idTable) => {
+            document.getElementById(idMap).remove();
+            document.getElementById(idp).remove();
+            document.getElementById(idTable).remove();
+        }//end close div function
+
+
+    </script>
+
+    <title>Garbage System Application</title>
+</head>
+<body>
+<div id="importPart"></div>
+<br>
+
+<div id="app" class="jumbotron">
+    <p class="lead" >
+        <strong th:text="${User.FirstName + ' ' + User.LastName }"/> Welcome back to the application!
+    </p>
+    <hr class="my-4">
+    <div id="worker-menu">
+        <ul class = "nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" id="show-truck-route" style="cursor:pointer;" onclick="showTruckRoute()">show truck and route</a>
+            </li>
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link active" id="show-workers" style="cursor:pointer;" onclick="showWorkers()">show all workers</a>-->
+<!--            </li>-->
+        </ul>
+    </div>
+    <div id="route"></div>
+    <div id="route-map" style="display:flex; flex-direction:row;"></div>
+
+
+</div>
+
+
+
+</body>
+</html>

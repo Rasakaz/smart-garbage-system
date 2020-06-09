@@ -23,7 +23,7 @@ public class Garbage_FIle_Tester {
             List<String> lines = Files.readAllLines(Paths.get("src//main//resources//static//garbage-bins.csv"));
             for(int i = 1; i < lines.size(); i++){
                 String [] result = lines.get(i).split(",");
-                bins.add(new GarbageBin(i, Double.parseDouble(result[2]), Double.parseDouble(result[3])));
+                bins.add(new GarbageBin(i, result[1], Double.parseDouble(result[2]), Double.parseDouble(result[3])));
             }
             return bins;
         } catch(Exception er){

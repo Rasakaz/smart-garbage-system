@@ -6,7 +6,7 @@ public class Login_Tester {
 
     private LoginController login;
 
-    public Login_Tester() { this.login = new LoginController(); }
+//    public Login_Tester() { this.login = new LoginController(); }
 
     public LoginController getLogin() { return login; }
 

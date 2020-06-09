@@ -1,6 +1,5 @@
 <!doctype html>
-<!--<html lang="en">-->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -19,27 +18,16 @@
           $("#importPart").load("navbar");
         });
 
-        const chooseClick = (type) => {
-           if(document.getElementById(userbtn)) {
-                document.getElementById(userbtn).style.backgroundColor = "rgb(233,236,239)";
-                document.getElementById(userbtn).style.color = "rgb(108,117,125)";
-           }
-            userbtn = type + '-btn';
-            document.getElementById(userbtn).style.backgroundColor = "rgb(108,117,125)";
-            document.getElementById(userbtn).style.color = "rgb(255,255,255)";
-        }
 
         const login = () => {
-            if(userbtn === "" || document.getElementById("uname").value === "" || document.getElementById("password").value === "") {
-                window.alert("please make sure you choose type and enter your details !");
-            } else {
-                const user = {
-                    UserType: userbtn.slice(0, userbtn.indexOf('-')),
-                    UserName:  document.getElementById("uname").value,
-                    Password: document.getElementById("password").value
-                };
-
-
+            const user = {
+                UserName: document.getElementById("uname").value,
+                Password: document.getElementById("password").value
+            }
+            if(user.UserName == "" || user.Password == ""){
+                window.alert("please make sure you enter all the details !");
+            }
+            else {
                 const options = {
                     method: 'POST',
                     headers: {
@@ -49,16 +37,24 @@
 
                     body: JSON.stringify(user)
                 };
+
                 fetch('login/checkDetails', options)
                 .then((res) => {
-                //return a response fail/success
-                   // console.log(res.body);
-                   window.location.href = '/administrator';
+                   res.json().then(json => {
+                        if(json.status == "failed") {
+                            window.alert("user not found in the system!");
+                        } else {
+                            console.log(json);
+                            if(json.data == "Admin"){
+                                window.location.href = '/administrator';
+                            }
+                            if(json.data == "Worker"){
+                                window.location.href = '/worker';
+                            }
+                        }
+                   })
                 });
             }
-
-
-
         }
     </script>
 
@@ -68,9 +64,9 @@
 <div id="importPart"></div>
 <br>
 <div id="app" class="jumbotron">
-    <p class="lead">Please choose user type</p>
-    <button id="admin-btn" type="button" class="btn btn-outline-secondary" onclick="chooseClick('admin')">Admin</button>
-    <button id="worker-btn" type="button" class="btn btn-outline-secondary" onclick="chooseClick('worker')">Worker</button>
+    <p class="lead">Login</p>
+<!--    <button id="admin-btn" type="button" class="btn btn-outline-secondary" onclick="chooseClick('admin')">Admin</button>-->
+<!--    <button id="worker-btn" type="button" class="btn btn-outline-secondary" onclick="chooseClick('worker')">Worker</button>-->
     <!--    <button type="button" class="btn btn-outline-secondary">Secondary</button>-->
 
     <hr class="my-4">

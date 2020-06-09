@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class AdministratorController {
@@ -25,7 +22,6 @@ public class AdministratorController {
     @RequestMapping(value = "/administrator/showBins", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, List<GarbageBin>> getAllBins(){
-        //model.addAttribute("Bins", mongoTemplate.findAll(GarbageBin.class));
         List<GarbageBin> bins = new ArrayList<>(mongoTemplate.findAll(GarbageBin.class));
         Map<String, List<GarbageBin>> res = new HashMap<>();
         res.put("bins",bins);
