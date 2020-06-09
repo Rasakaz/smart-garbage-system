@@ -39,7 +39,8 @@ public class GarbageBin {
     @Override
     public String toString() {
         return "{ Longitude: " + Longitude + ",\n"
-                + "Latitude: " + Latitude + "}";
+                + "Latitude: " + Latitude + "\n"
+                + "State: " + State + "}";
     }
 }
 

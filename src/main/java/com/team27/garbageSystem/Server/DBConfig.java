@@ -61,6 +61,9 @@ public class DBConfig {
         for(String n: neighborhoods){
             List<GarbageBin> temp_bin = new ArrayList<>();
             for(GarbageBin bin: bins){
+                if(bin.getState().equals("Empty") || bin.getState().equals("Broken")){
+                    continue;
+                }
                 if(bin.getNeighborhood().equals(n)){
                     temp_bin.add(bin);
                 }
