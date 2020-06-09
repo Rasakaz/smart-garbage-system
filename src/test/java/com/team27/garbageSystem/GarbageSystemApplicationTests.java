@@ -36,7 +36,7 @@ class GarbageSystemApplicationTests {
 			}
 		};
 //		Assertions.assertEquals(true, LoginRoutesTest(login_tester.getLogin()));
-		Assertions.assertEquals(true, AdministratorLoginTest(login_tester.getLogin(), user));
+//		Assertions.assertEquals(true, AdministratorLoginTest(login_tester.getLogin(), user));
 	}
 
 	@Test
