@@ -36,10 +36,7 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
-<<<<<<< HEAD
-=======
 		
->>>>>>> 2e879b2000eb815363532217b3469e3b377624f0
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter</artifactId>

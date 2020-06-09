@@ -13,6 +13,10 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2e879b2000eb815363532217b3469e3b377624f0
 @EnableMongoRepositories(basePackages = {"com.team27"})
 @Configuration
 public class DBConfig {
@@ -28,6 +32,7 @@ public class DBConfig {
         this.mongoTemplate = mongoTemplate;
         InjectAdministrators();
         ParseBinsAndAddToDB();
+<<<<<<< HEAD
         InjectWorkersToDB();
         InjectTrucksToDB();
 
@@ -98,6 +103,60 @@ public class DBConfig {
         mongoTemplate.save(new Route(minG, LineCounter));
     }
 
+=======
+
+    }
+    
+
+    @Bean
+    public void InjectToDB() {
+        InjectAdministrators();
+        InjectWorkersToDB();
+        ParseBinsAndAddToDB();
+    }
+
+    private void InjectWorkersToDB() {
+        mongoTemplate.dropCollection(Worker.class);//clean workers collection before inject
+
+        //inject workers to DB
+        mongoTemplate.save(new Worker(
+                "worker1",
+                "1234worker1",
+                "Liam",
+                "Ava",
+                "Worker",
+                6500.0,
+                (float) 1.5), "Workers");
+
+        mongoTemplate.save(new Worker(
+                "worker2",
+                "1234worker2",
+                "Thomas",
+                "Harry",
+                "Worker",
+                7500.0,
+                (float) 3.1), "Workers");
+
+        mongoTemplate.save(new Worker(
+                "worker3",
+                "1234worker3",
+                "Robers",
+                "Oscar",
+                "Worker",
+                5500.0,
+                (float) 0.3), "Workers");
+
+        mongoTemplate.save(new Worker(
+                "worker4",
+                "1234worker4",
+                "Joseph",
+                "James",
+                "Worker",
+                6350.0,
+                (float) 0.9), "Workers");
+
+        mongoTemplate.findAll(Worker.class).forEach(System.out::println);
+>>>>>>> 2e879b2000eb815363532217b3469e3b377624f0
 
 
     private void ParseBinsAndAddToDB(){
