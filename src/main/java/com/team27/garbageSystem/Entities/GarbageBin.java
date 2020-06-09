@@ -12,11 +12,12 @@ public class GarbageBin {
 
     public GarbageBin() {} // empty c'tor
 
-    public GarbageBin(int id,String neighborhood, Double longitude, Double latitude) {
+    public GarbageBin(int id,String neighborhood, Double longitude, Double latitude, String state) {
         this.Neighborhood = neighborhood;
         this.Id = id;
         this.Longitude = longitude;
         this.Latitude = latitude;
+        this.State = state;
     }
 
     // Getters
@@ -24,8 +25,8 @@ public class GarbageBin {
     public String getNeighborhood() { return Neighborhood; }
     public Double getLongitude() { return Longitude; }
     public Double getLatitude() { return Latitude; }
-
     public String getState() { return State; }
+
     // Setters
     public void setId(int id) { Id = id; }
     public void setNeighborhood(String neighborhood) { Neighborhood = neighborhood; }

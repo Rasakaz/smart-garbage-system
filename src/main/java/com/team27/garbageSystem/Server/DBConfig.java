@@ -13,10 +13,6 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 2e879b2000eb815363532217b3469e3b377624f0
 @EnableMongoRepositories(basePackages = {"com.team27"})
 @Configuration
 public class DBConfig {
@@ -32,7 +28,6 @@ public class DBConfig {
         this.mongoTemplate = mongoTemplate;
         InjectAdministrators();
         ParseBinsAndAddToDB();
-<<<<<<< HEAD
         InjectWorkersToDB();
         InjectTrucksToDB();
 
@@ -103,124 +98,70 @@ public class DBConfig {
         mongoTemplate.save(new Route(minG, LineCounter));
     }
 
-=======
 
-    }
-    
-
-    @Bean
-    public void InjectToDB() {
-        InjectAdministrators();
-        InjectWorkersToDB();
-        ParseBinsAndAddToDB();
-    }
-
-    private void InjectWorkersToDB() {
-        mongoTemplate.dropCollection(Worker.class);//clean workers collection before inject
-
-        //inject workers to DB
-        mongoTemplate.save(new Worker(
-                "worker1",
-                "1234worker1",
-                "Liam",
-                "Ava",
-                "Worker",
-                6500.0,
-                (float) 1.5), "Workers");
-
-        mongoTemplate.save(new Worker(
-                "worker2",
-                "1234worker2",
-                "Thomas",
-                "Harry",
-                "Worker",
-                7500.0,
-                (float) 3.1), "Workers");
-
-        mongoTemplate.save(new Worker(
-                "worker3",
-                "1234worker3",
-                "Robers",
-                "Oscar",
-                "Worker",
-                5500.0,
-                (float) 0.3), "Workers");
-
-        mongoTemplate.save(new Worker(
-                "worker4",
-                "1234worker4",
-                "Joseph",
-                "James",
-                "Worker",
-                6350.0,
-                (float) 0.9), "Workers");
-
-        mongoTemplate.findAll(Worker.class).forEach(System.out::println);
->>>>>>> 2e879b2000eb815363532217b3469e3b377624f0
-
-
-    private void ParseBinsAndAddToDB(){
-        try{
-            List<String> lines = Files.readAllLines(Paths.get("src//main//resources//static//garbage-bins.csv"), StandardCharsets.UTF_8);
-            mongoTemplate.dropCollection(GarbageBin.class); //clean GarbageBin collection
-            List<String> neighborhoods = new ArrayList<>();
-            for(int i = 1; i < lines.size(); i++){
-                String [] result = lines.get(i).split(",");
-                if(!neighborhoods.contains(result[1])){
-                    neighborhoods.add(result[1]);
+        private void ParseBinsAndAddToDB () {
+            try {
+                List<String> lines = Files.readAllLines(Paths.get("src//main//resources//static//garbage-bins.csv"), StandardCharsets.UTF_8);
+                mongoTemplate.dropCollection(GarbageBin.class); //clean GarbageBin collection
+                List<String> neighborhoods = new ArrayList<>();
+                for (int i = 1; i < lines.size(); i++) {
+                    String[] result = lines.get(i).split(",");
+                    if (!neighborhoods.contains(result[1])) {
+                        neighborhoods.add(result[1]);
+                    }
+                    mongoTemplate.save(new GarbageBin(i, result[1], Double.parseDouble(result[2]), Double.parseDouble(result[3]), (new Random().nextInt(2) == 0) ? "Empty": "Full"));
                 }
-                mongoTemplate.save(new GarbageBin(i, result[1], Double.parseDouble(result[2]), Double.parseDouble(result[3])));
+                InjectRoutesToDB(neighborhoods); // after inject all the garbage bins -- then inject the Routes with mapping
+                //  mongoTemplate.findAll(GarbageBin.class).forEach(System.out::println);
+
+            } catch (Exception er) {
+                System.out.println(er.getMessage());
             }
-            InjectRoutesToDB(neighborhoods); // after inject all the garbage bins -- then inject the Routes with mapping
-          //  mongoTemplate.findAll(GarbageBin.class).forEach(System.out::println);
-
-        } catch(Exception er){
-            System.out.println(er.getMessage());
         }
-    }
 
-     private void InjectWorkersToDB() {
-         mongoTemplate.dropCollection(Worker.class);//clean workers collection before inject
+        private void InjectWorkersToDB () {
+            mongoTemplate.dropCollection(Worker.class);//clean workers collection before inject
 
-         //inject workers to DB
-         mongoTemplate.save(new Worker(
-                 "worker1",
-                 "1234worker1",
-                 "Liam",
-                 "Ava",
-                 "Worker",
-                 6500.0,
-                 (float) 1.5), "Workers");
+            //inject workers to DB
+            mongoTemplate.save(new Worker(
+                    "worker1",
+                    "1234worker1",
+                    "Liam",
+                    "Ava",
+                    "Worker",
+                    6500.0,
+                    (float) 1.5), "Workers");
 
-         mongoTemplate.save(new Worker(
-                 "worker2",
-                 "1234worker2",
-                 "Thomas",
-                 "Harry",
-                 "Worker",
-                 7500.0,
-                 (float) 3.1), "Workers");
+            mongoTemplate.save(new Worker(
+                    "worker2",
+                    "1234worker2",
+                    "Thomas",
+                    "Harry",
+                    "Worker",
+                    7500.0,
+                    (float) 3.1), "Workers");
 
-         mongoTemplate.save(new Worker(
-                 "worker3",
-                 "1234worker3",
-                 "Robers",
-                 "Oscar",
-                 "Worker",
-                 5500.0,
-                 (float) 0.3), "Workers");
+            mongoTemplate.save(new Worker(
+                    "worker3",
+                    "1234worker3",
+                    "Robers",
+                    "Oscar",
+                    "Worker",
+                    5500.0,
+                    (float) 0.3), "Workers");
 
-         mongoTemplate.save(new Worker(
-                 "worker4",
-                 "1234worker4",
-                 "Joseph",
-                 "James",
-                 "Worker",
-                 6350.0,
-                 (float) 0.9), "Workers");
+            mongoTemplate.save(new Worker(
+                    "worker4",
+                    "1234worker4",
+                    "Joseph",
+                    "James",
+                    "Worker",
+                    6350.0,
+                    (float) 0.9), "Workers");
 
 //        mongoTemplate.findAll(Worker.class).forEach(System.out::println);
-     }
+        }
+
 
     private void InjectAdministrators(){
         mongoTemplate.dropCollection(Administrator.class);
@@ -262,8 +203,5 @@ public class DBConfig {
                 9500,
                 (float) 0.1), "Administrators");
 
-
-        // pull all the administrators that injected to check correct
-//        mongoTemplate.findAll(Administrator.class).forEach(System.out::println);
     }
 }
