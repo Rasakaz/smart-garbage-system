@@ -15,6 +15,9 @@
           $("#importPart").load("navbar");
         });
 
+        var binsDrop;
+        var linesDrop;
+        var truckDrop;
         const showBins = () => {
             const options = {
                 method: 'GET',
@@ -114,6 +117,182 @@
             let theTable = document.getElementById('bins').appendChild(table);
         } //end build Bins table
 
+        const addBinToRoute = () => {
+            if(document.getElementById('bin-to-line') != null){
+                document.getElementById('bin-route').style.fontWeight = 'normal';
+                closeTable('bin-to-line');
+                return;
+            }
+           document.getElementById('bin-route').style.fontWeight = 'bold';
+           const options = {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            };
+            fetch('/administrator/getBinsAndLines', options)
+            .then((res) => {
+               res.json().then(json => {
+                    createDropDown(json);
+               })
+            });
+        }//end function add bin to route
+
+        const addBinToLineClick = () => {
+            const binId = binsDrop.options[binsDrop.selectedIndex].value;
+            const lineId = linesDrop.options[linesDrop.selectedIndex].value;
+            if(binId == "Select bin id" || lineId == "Select route number"){
+                return;
+            }
+
+            const data = {
+                id: binId,
+                line: lineId
+            }
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+
+            fetch('/administrator/addBinToLine', options)
+            .then((res) => {
+               res.json().then(json => {
+                   alert(json.data);
+               })
+            });
+        }// end function add Bin To Line Click
+
+        const createDropDown = (data) => {
+            var binToLine = document.createElement('div');
+            binToLine.setAttribute('id', 'bin-to-line');
+            binsDrop = document.createElement('select');
+            linesDrop = document.createElement('select');
+            var addBtn = document.createElement('button');
+            addBtn.setAttribute('class', 'btn btn-outline-secondary');
+            addBtn.innerHTML = "Add";
+
+            var option = document.createElement('option');
+            option.text = "Select bin id";
+            binsDrop.appendChild(option);
+
+            var option = document.createElement('option');
+            option.text = "Select route number";
+            linesDrop.appendChild(option);
+
+            for(let i of data.id){
+                var option = document.createElement('option');
+                option.value = i;
+                option.text = i;
+                binsDrop.appendChild(option);
+            }
+
+            for(let l of data.line) {
+                var option = document.createElement('option');
+                option.value = l;
+                option.text = l;
+                linesDrop.appendChild(option);
+            }
+            addBtn.setAttribute('onclick', 'addBinToLineClick();');
+            binToLine.appendChild(binsDrop);
+            binToLine.appendChild(linesDrop);
+            binToLine.appendChild(addBtn);
+            document.getElementById('bin-route-div').appendChild(binToLine);
+        }// end function create drop down
+
+
+        const ChangeTruckRoute = () => {
+            if(document.getElementById('truck-line') != null){
+                document.getElementById('truck-route').style.fontWeight = 'normal';
+                closeTable('truck-line');
+                return;
+            }
+           document.getElementById('truck-route').style.fontWeight = 'bold';
+           const options = {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            };
+            fetch('/administrator/getTruckAndRoutes', options)
+            .then((res) => {
+               res.json().then(json => {
+                    ChangeTruckLineDropDown(json);
+               })
+            });
+        }// end Change Truck Route function
+
+        const ChangeTruckLineDropDown = (data) => {
+            var changeTruckLine = document.createElement('div');
+            changeTruckLine.setAttribute('id', 'truck-line');
+            truckDrop = document.createElement('select');
+            linesDrop = document.createElement('select');
+            var addBtn = document.createElement('button');
+            addBtn.setAttribute('class', 'btn btn-outline-secondary');
+            addBtn.innerHTML = "Change";
+
+            var option = document.createElement('option');
+            option.text = "Select truck number";
+            truckDrop.appendChild(option);
+
+            var option = document.createElement('option');
+            option.text = "Select line number";
+            linesDrop.appendChild(option);
+
+            for(let t of data.truck){
+                var option = document.createElement('option');
+                option.value = t;
+                option.text = t;
+                truckDrop.appendChild(option);
+            }
+
+            for(let l of data.line) {
+                var option = document.createElement('option');
+                option.value = l;
+                option.text = l;
+                linesDrop.appendChild(option);
+            }
+            addBtn.setAttribute('onclick', 'changeTruckLine();');
+            changeTruckLine.appendChild(truckDrop);
+            changeTruckLine.appendChild(linesDrop);
+            changeTruckLine.appendChild(addBtn);
+            document.getElementById('truck-route-div').appendChild(changeTruckLine);
+        }//end Change Truck Line Drop Down function
+
+        const changeTruckLine = () => {
+            const truck = truckDrop.options[truckDrop.selectedIndex].value;
+            const lineId = linesDrop.options[linesDrop.selectedIndex].value;
+            if(truck == "Select truck number" || lineId == "Select line number"){
+                return;
+            }
+
+            const data = {
+                truck: truck,
+                line: lineId
+            }
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+
+            fetch('/administrator/changeTruckRoute', options)
+            .then((res) => {
+               res.json().then(json => {
+                   alert(json.data);
+               })
+            });
+
+        }//end change Truck Line function
+
         const closeTable = (id) => {
             document.getElementById(id).remove();
         } // end close table function
@@ -126,24 +305,39 @@
 <div id="importPart"></div>
 <br>
 
-<div id="app" class="jumbotron">
-    <p class="lead" >
-        <strong th:text="${User.FirstName + ' ' + User.LastName }"/> Welcome back to the application!
-    </p>
-    <hr class="my-4">
-    <div id="administrator-menu">
-        <ul class = "nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active" id="show-bins" style="cursor:pointer;" onclick="showBins()">show all bins</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" id="show-workers" style="cursor:pointer;" onclick="showWorkers()">show all workers</a>
-            </li>
-        </ul>
+<div id="app" class="jumbotron" >
+        <p class="lead" >
+            <strong th:text="${User.FirstName + ' ' + User.LastName }"/> Welcome back to the application!
+        </p>
+        <hr class="my-4">
+    <div style="display:flex;flex-direction:row;">
+        <div style="width:50vw;">
+            <div id="administrator-menu">
+                <ul class = "nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="show-bins"><i onclick="showBins()" style="cursor:pointer;">Show all bins</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="show-workers"><i onclick="showWorkers()" style="cursor:pointer;">Show all workers</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="bin-route"><i onclick="addBinToRoute()" style="cursor:pointer;">Add bin to route</i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="truck-route"><i onclick="ChangeTruckRoute()" style="cursor:pointer;">Change truck route line</i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="width:50vw;">
+            <div id="bins" style="width:50vw;"></div>
+            <div id="workers" style="width:50vw;"></div>
+            <div id="bin-route-div" style="width:50vw;"></div>
+            <div id="truck-route-div" style="width:50vw;"></div>
+        </div>
     </div>
 
-    <div id="bins"></div>
-    <div id="workers"></div>
 </div>
 
 

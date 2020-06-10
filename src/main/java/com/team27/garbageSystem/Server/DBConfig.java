@@ -5,12 +5,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.web.client.RestTemplate;
 
 import javax.sound.sampled.Line;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 @EnableMongoRepositories(basePackages = {"com.team27"})
@@ -109,10 +111,15 @@ public class DBConfig {
                 List<String> neighborhoods = new ArrayList<>();
                 for (int i = 1; i < lines.size(); i++) {
                     String[] result = lines.get(i).split(",");
+//                    TimeUnit.SECONDS.sleep(1);
+//                    RestTemplate restTemplate = new RestTemplate();
+//                    String connection = restTemplate.getForObject("https://nominatim.openstreetmap.org/reverse?format=geojson"+ "&lat=" + result[2] + "&lon=" + result[3] , String.class);
+//                    String street = connection.split(":")[16].replace("Be'er Sheva Innovation District,", "").replace(", no", "").replace("\"", "").replace(",address", "").replace("),display_name", "");
                     if (!neighborhoods.contains(result[1])) {
                         neighborhoods.add(result[1]);
                     }
-                    mongoTemplate.save(new GarbageBin(i, result[1], Double.parseDouble(result[2]), Double.parseDouble(result[3]), (new Random().nextInt(2) == 0) ? "Empty": "Full"));
+                    //(new Random().nextInt(2) == 0) ? "Empty": "Full")
+                    mongoTemplate.save(new GarbageBin(i, result[1], Double.parseDouble(result[2]), Double.parseDouble(result[3]),"Full"));
                 }
                 InjectRoutesToDB(neighborhoods); // after inject all the garbage bins -- then inject the Routes with mapping
                 //  mongoTemplate.findAll(GarbageBin.class).forEach(System.out::println);

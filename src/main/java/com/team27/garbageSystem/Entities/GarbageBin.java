@@ -8,6 +8,7 @@ public class GarbageBin {
     private String Neighborhood; // the Garbage bin neighborhood
     private Double Longitude; // the x coordinate of the garbage bin
     private Double Latitude; // the y coordinate of the garbage bin
+    private String Street; //the street name where the garbage bin located.
     private String State; // the state of the garbage bin - full / empty / broken
 
     public GarbageBin() {} // empty c'tor
@@ -17,6 +18,7 @@ public class GarbageBin {
         this.Id = id;
         this.Longitude = longitude;
         this.Latitude = latitude;
+//        this.Street = street;
         this.State = state;
     }
 
@@ -26,6 +28,7 @@ public class GarbageBin {
     public Double getLongitude() { return Longitude; }
     public Double getLatitude() { return Latitude; }
     public String getState() { return State; }
+//    public String getStreet() { return Street; }
 
     // Setters
     public void setId(int id) { Id = id; }
@@ -34,12 +37,14 @@ public class GarbageBin {
     public void setLatitude(Double latitude) { Latitude = latitude; }
     public void setState(String state) { State = state; }
 
+//    public void setStreet(String street) { Street = street; }
 
 
     @Override
     public String toString() {
         return "{ Longitude: " + Longitude + ",\n"
                 + "Latitude: " + Latitude + "\n"
+//                + "Street: " + Street + "\n"
                 + "State: " + State + "}";
     }
 }

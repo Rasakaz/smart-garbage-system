@@ -27,7 +27,9 @@ public class WorkrerController {
     public ServiceResponse<Truck> getRouteTruck() {
         List<Truck> truck = new ArrayList<>(mongoTemplate.findAll(Truck.class));
         Worker worker = (Worker)LoginController.sessionUser;
-        worker.setTruck(truck.get(new Random().nextInt(truck.size())));
+        if(worker.getTruck() == null){ // if the worker doest connected to a truck then add to him truck.
+            worker.setTruck(truck.get(new Random().nextInt(truck.size())));
+        }
         return new ServiceResponse<Truck>("success",  worker.getTruck());
     }
 
