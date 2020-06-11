@@ -1,43 +1,128 @@
 package com.team27.garbageSystem;
 
-import com.team27.garbageSystem.Entities.Administrator;
-import com.team27.garbageSystem.Entities.GarbageBin;
 import com.team27.garbageSystem.controllers.AboutController;
 import com.team27.garbageSystem.controllers.ContactController;
 import com.team27.garbageSystem.controllers.HomeController;
 import com.team27.garbageSystem.controllers.LoginController;
-import org.assertj.core.error.ShouldBeSymbolicLink;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
-import java.util.HashMap;
-import java.util.List;
+import java.io.IOException;
 import java.util.Map;
 
 @SpringBootTest
 class GarbageSystemApplicationTests {
 
+
 	@Test
-	void GarbageContextLoads(){
-		Garbage_FIle_Tester Bins = new Garbage_FIle_Tester();
-		Assertions.assertEquals(true, BinsCoordinatesTest(Bins.getGarbageFile()));
-		Assertions.assertEquals(true, BinsIdTest(Bins.getGarbageFile()));
+	void CheckGoodAdmin() throws IOException {
+		WebDriver driver = new FirefoxDriver();
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		String admin = "";
+		try{
+			driver.get("http://localhost:8080");
+			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
+			wait.until(presenceOfElementLocated(By.id("admin-btn")));
+			driver.findElement(By.id("uname")).sendKeys("admin1");
+			driver.findElement(By.id("password")).sendKeys("1234admin1");
+			driver.findElement(By.id("admin-btn")).click();
+			WebElement adminName = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"app\"]/p/strong")));
+			admin = adminName.getText();
+		}finally {
+			driver.quit();
+		}
+		Assertions.assertEquals("Ofir Haim", admin);
 	}
 
 	@Test
-	void LoginTest(){
-		Login_Tester login_tester = new Login_Tester();
-		Map<String, String> user = new HashMap<String, String>(){
-			{
-				put("UserType", "adminn");
-				put("UserName", "admin1");
-				put("Password", "1234admin1");
-			}
-		};
-//		Assertions.assertEquals(true, LoginRoutesTest(login_tester.getLogin()));
-//		Assertions.assertEquals(true, AdministratorLoginTest(login_tester.getLogin(), user));
+	void CheckBadAdmin() throws IOException {
+		WebDriver driver = new FirefoxDriver();
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		String admin = "";
+		try{
+			driver.get("http://localhost:8080");
+			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
+			wait.until(presenceOfElementLocated(By.id("admin-btn")));
+			driver.findElement(By.id("uname")).sendKeys("add");
+			driver.findElement(By.id("password")).sendKeys("1234");
+			driver.findElement(By.id("admin-btn")).click();
+		} finally {
+			driver.quit();
+		}
+		Assertions.assertEquals("", admin);
 	}
+
+	@Test
+	void CheckGoodWorker() throws IOException {
+		WebDriver driver = new FirefoxDriver();
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		String admin = "";
+		try{
+			driver.get("http://localhost:8080");
+			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
+			wait.until(presenceOfElementLocated(By.id("admin-btn")));
+			driver.findElement(By.id("uname")).sendKeys("worker1");
+			driver.findElement(By.id("password")).sendKeys("1234worker1");
+			driver.findElement(By.id("admin-btn")).click();
+			WebElement adminName = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"app\"]/p/strong")));
+			admin = adminName.getText();
+		} finally {
+			driver.quit();
+		}
+		Assertions.assertEquals("Liam Ava", admin);
+	}
+
+	@Test
+	void CheckWorkerRoute() throws IOException {
+		WebDriver driver = new FirefoxDriver();
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		String mapid = "";
+		try{
+			driver.get("http://localhost:8080");
+			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
+			wait.until(presenceOfElementLocated(By.id("admin-btn")));
+			driver.findElement(By.id("uname")).sendKeys("worker1");
+			driver.findElement(By.id("password")).sendKeys("1234worker1");
+			driver.findElement(By.id("admin-btn")).click();
+			wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"show-truck-route\"]/i")));
+			driver.findElement(By.xpath("//*[@id=\"show-truck-route\"]/i")).click();
+			WebElement map = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"show-map\"]")));
+			mapid = map.getAttribute("id");
+		} finally {
+			driver.quit();
+		}
+		Assertions.assertEquals("show-map", mapid);
+	}
+
+	@Test
+	void AdminShowBins() throws IOException {
+		WebDriver driver = new FirefoxDriver();
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		String tableId = "";
+		try{
+			driver.get("http://localhost:8080");
+			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
+			wait.until(presenceOfElementLocated(By.id("admin-btn")));
+			driver.findElement(By.id("uname")).sendKeys("admin1");
+			driver.findElement(By.id("password")).sendKeys("1234admin1");
+			driver.findElement(By.id("admin-btn")).click();
+			wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"show-bins\"]/i")));
+			driver.findElement(By.xpath("//*[@id=\"show-bins\"]/i")).click();
+			WebElement bins = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"bins-table\"]")));
+			tableId = bins.getAttribute("id");
+		} finally {
+			driver.quit();
+		}
+		Assertions.assertEquals("bins-table", tableId);
+	}
+
 
 	@Test
 	void AboutTest(){
@@ -70,25 +155,8 @@ class GarbageSystemApplicationTests {
 		return login_tester.loginCheck(test_user).equals("failed");
 	}
 
-//	private Boolean LoginRoutesTest(LoginController login_tester){
-//		return (login_tester.login().equals("login"));
-//	}
-
-	private Boolean BinsIdTest(List<GarbageBin> bins) {
-		for(GarbageBin bin: bins){
-			if(bin.getId() < 0){
-				return false;
-			}
-		}
-		return true;
+	private Boolean LoginRoutesTest(LoginController login_tester){
+		return (login_tester.login().equals("login"));
 	}
 
-	private Boolean BinsCoordinatesTest(List<GarbageBin> bins) {
-		for(GarbageBin bin: bins){
-			if(bin.getLatitude() < 0 || bin.getLongitude() < 0){
-				return false;
-			}
-		}
-		return true;
-	}
 }
