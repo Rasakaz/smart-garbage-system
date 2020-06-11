@@ -3,6 +3,7 @@ pipeline {
         docker {
             image 'maven:3-alpine'
             args '-v /root/.m2:/root/.m2'
+            run '-p 27017 --name mongodb --network --network http://147.234.32.36/ mongo:4.2.3'
         }
     }
         stages {
