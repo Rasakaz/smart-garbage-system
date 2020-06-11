@@ -17,8 +17,8 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-@EnableMongoRepositories(basePackages = {"com.team27"})
-@Configuration
+//@EnableMongoRepositories(basePackages = {"com.team27"})
+//@Configuration
 public class DBConfig {
 /*
     this class is invoke each time when the application start up, and will inject all the
