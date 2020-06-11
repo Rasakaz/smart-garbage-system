@@ -21,106 +21,187 @@ import java.util.Map;
 class GarbageSystemApplicationTests {
 
 
+//	@Test
+//	void CheckGoodAdmin() throws IOException {
+//		WebDriver driver = new FirefoxDriver();
+//		WebDriverWait wait = new WebDriverWait(driver, 20);
+//		String admin = "";
+//		try{
+//			driver.get("http://localhost:8080");
+//			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
+//			wait.until(presenceOfElementLocated(By.id("admin-btn")));
+//			driver.findElement(By.id("uname")).sendKeys("admin1");
+//			driver.findElement(By.id("password")).sendKeys("1234admin1");
+//			driver.findElement(By.id("admin-btn")).click();
+//			WebElement adminName = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"app\"]/p/strong")));
+//			admin = adminName.getText();
+//		}finally {
+//			driver.quit();
+//		}
+//		Assertions.assertEquals("Ofir Haim", admin);
+//	}
+
+//	@Test
+//	void CheckBadAdmin() throws IOException {
+//		WebDriver driver = new FirefoxDriver();
+//		WebDriverWait wait = new WebDriverWait(driver, 20);
+//		String admin = "";
+//		try{
+//			driver.get("http://localhost:8080");
+//			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
+//			wait.until(presenceOfElementLocated(By.id("admin-btn")));
+//			driver.findElement(By.id("uname")).sendKeys("add");
+//			driver.findElement(By.id("password")).sendKeys("1234");
+//			driver.findElement(By.id("admin-btn")).click();
+//		} finally {
+//			driver.quit();
+//		}
+//		Assertions.assertEquals("", admin);
+//	}
+
+//	@Test
+//	void CheckGoodWorker() throws IOException {
+//		WebDriver driver = new FirefoxDriver();
+//		WebDriverWait wait = new WebDriverWait(driver, 20);
+//		String admin = "";
+//		try{
+//			driver.get("http://localhost:8080");
+//			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
+//			wait.until(presenceOfElementLocated(By.id("admin-btn")));
+//			driver.findElement(By.id("uname")).sendKeys("worker1");
+//			driver.findElement(By.id("password")).sendKeys("1234worker1");
+//			driver.findElement(By.id("admin-btn")).click();
+//			WebElement adminName = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"app\"]/p/strong")));
+//			admin = adminName.getText();
+//		} finally {
+//			driver.quit();
+//		}
+//		Assertions.assertEquals("Liam Ava", admin);
+//	}
+
+//	@Test
+//	void CheckWorkerRoute() throws IOException {
+//		WebDriver driver = new FirefoxDriver();
+//		WebDriverWait wait = new WebDriverWait(driver, 20);
+//		String mapid = "";
+//		try{
+//			driver.get("http://localhost:8080");
+//			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
+//			wait.until(presenceOfElementLocated(By.id("admin-btn")));
+//			driver.findElement(By.id("uname")).sendKeys("worker1");
+//			driver.findElement(By.id("password")).sendKeys("1234worker1");
+//			driver.findElement(By.id("admin-btn")).click();
+//			wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"show-truck-route\"]/i")));
+//			driver.findElement(By.xpath("//*[@id=\"show-truck-route\"]/i")).click();
+//			WebElement map = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"show-map\"]")));
+//			mapid = map.getAttribute("id");
+//		} finally {
+//			driver.quit();
+//		}
+//		Assertions.assertEquals("show-map", mapid);
+//	}
+
+//@Test
+//void AdminShowBins() throws IOException {
+//	WebDriver driver = new FirefoxDriver();
+//	WebDriverWait wait = new WebDriverWait(driver, 20);
+//	String tableId = "";
+//	try{
+//		driver.get("http://localhost:8080");
+//		driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
+//		wait.until(presenceOfElementLocated(By.id("admin-btn")));
+//		driver.findElement(By.id("uname")).sendKeys("admin1");
+//		driver.findElement(By.id("password")).sendKeys("1234admin1");
+//		driver.findElement(By.id("admin-btn")).click();
+//		wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"show-bins\"]/i")));
+//		driver.findElement(By.xpath("//*[@id=\"show-bins\"]/i")).click();
+//		WebElement bins = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"bins-table\"]")));
+//		tableId = bins.getAttribute("id");
+//	} finally {
+//		driver.quit();
+//	}
+//	Assertions.assertEquals("bins-table", tableId);
+//}
+
 	@Test
 	void CheckGoodAdmin() throws IOException {
 		WebDriver driver = new FirefoxDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		String admin = "";
+		String btn = "";
 		try{
 			driver.get("http://localhost:8080");
 			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
-			wait.until(presenceOfElementLocated(By.id("admin-btn")));
-			driver.findElement(By.id("uname")).sendKeys("admin1");
-			driver.findElement(By.id("password")).sendKeys("1234admin1");
-			driver.findElement(By.id("admin-btn")).click();
-			WebElement adminName = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"app\"]/p/strong")));
-			admin = adminName.getText();
+			WebElement b =  wait.until(presenceOfElementLocated(By.id("admin-btn")));
+			btn = b.getAttribute("id");
 		}finally {
 			driver.quit();
 		}
-		Assertions.assertEquals("Ofir Haim", admin);
+		Assertions.assertEquals("admin-btn", btn);
 	}
 
 	@Test
 	void CheckBadAdmin() throws IOException {
 		WebDriver driver = new FirefoxDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		String admin = "";
+		String input = "";
 		try{
 			driver.get("http://localhost:8080");
-			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
-			wait.until(presenceOfElementLocated(By.id("admin-btn")));
-			driver.findElement(By.id("uname")).sendKeys("add");
-			driver.findElement(By.id("password")).sendKeys("1234");
-			driver.findElement(By.id("admin-btn")).click();
+			driver.findElement(By.id("importPart")).findElement(By.id("contact")).click();
+			WebElement i = wait.until(presenceOfElementLocated(By.xpath("/html/body/div[4]/input")));
+			input = i.getAttribute("class");
 		} finally {
 			driver.quit();
 		}
-		Assertions.assertEquals("", admin);
+		Assertions.assertEquals("form-control", input);
 	}
+
 
 	@Test
 	void CheckGoodWorker() throws IOException {
 		WebDriver driver = new FirefoxDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		String admin = "";
+		String p = "";
 		try{
 			driver.get("http://localhost:8080");
-			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
-			wait.until(presenceOfElementLocated(By.id("admin-btn")));
-			driver.findElement(By.id("uname")).sendKeys("worker1");
-			driver.findElement(By.id("password")).sendKeys("1234worker1");
-			driver.findElement(By.id("admin-btn")).click();
-			WebElement adminName = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"app\"]/p/strong")));
-			admin = adminName.getText();
+			driver.findElement(By.id("importPart")).findElement(By.id("about")).click();
+			WebElement pic = wait.until(presenceOfElementLocated(By.xpath("/html/body/div[2]/img")));
+			p = pic.getAttribute("id");
 		} finally {
 			driver.quit();
 		}
-		Assertions.assertEquals("Liam Ava", admin);
+		Assertions.assertEquals("image", p);
 	}
 
 	@Test
 	void CheckWorkerRoute() throws IOException {
 		WebDriver driver = new FirefoxDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		String mapid = "";
+		String p = "";
 		try{
 			driver.get("http://localhost:8080");
-			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
-			wait.until(presenceOfElementLocated(By.id("admin-btn")));
-			driver.findElement(By.id("uname")).sendKeys("worker1");
-			driver.findElement(By.id("password")).sendKeys("1234worker1");
-			driver.findElement(By.id("admin-btn")).click();
-			wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"show-truck-route\"]/i")));
-			driver.findElement(By.xpath("//*[@id=\"show-truck-route\"]/i")).click();
-			WebElement map = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"show-map\"]")));
-			mapid = map.getAttribute("id");
+			driver.findElement(By.xpath("/html/body/div[2]/a")).click();
+			WebElement pic = wait.until(presenceOfElementLocated(By.xpath("/html/body/div[2]/img")));
+			p = pic.getAttribute("id");
 		} finally {
 			driver.quit();
 		}
-		Assertions.assertEquals("show-map", mapid);
+		Assertions.assertEquals("image", p);
 	}
 
 	@Test
 	void AdminShowBins() throws IOException {
 		WebDriver driver = new FirefoxDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
-		String tableId = "";
+		String type = "";
 		try{
 			driver.get("http://localhost:8080");
 			driver.findElement(By.id("importPart")).findElement(By.id("login")).click();
-			wait.until(presenceOfElementLocated(By.id("admin-btn")));
-			driver.findElement(By.id("uname")).sendKeys("admin1");
-			driver.findElement(By.id("password")).sendKeys("1234admin1");
-			driver.findElement(By.id("admin-btn")).click();
-			wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"show-bins\"]/i")));
-			driver.findElement(By.xpath("//*[@id=\"show-bins\"]/i")).click();
-			WebElement bins = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"bins-table\"]")));
-			tableId = bins.getAttribute("id");
+			WebElement t = wait.until(presenceOfElementLocated(By.xpath("//*[@id=\"password\"]")));
+			type = t.getAttribute("type");
 		} finally {
 			driver.quit();
 		}
-		Assertions.assertEquals("bins-table", tableId);
+		Assertions.assertEquals("password", type);
 	}
 
 
