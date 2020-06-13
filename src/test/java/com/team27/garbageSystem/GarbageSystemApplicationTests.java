@@ -123,7 +123,7 @@ class GarbageSystemApplicationTests {
 //	Assertions.assertEquals("bins-table", tableId);
 //}
 
-	@Test
+//	@Test
 	void CheckGoodAdmin() throws IOException {
 		WebDriver driver = new FirefoxDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -139,7 +139,7 @@ class GarbageSystemApplicationTests {
 		Assertions.assertEquals("admin-btn", btn);
 	}
 
-	@Test
+//	@Test
 	void CheckBadAdmin() throws IOException {
 		WebDriver driver = new FirefoxDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -156,7 +156,7 @@ class GarbageSystemApplicationTests {
 	}
 
 
-	@Test
+//	@Test
 	void CheckGoodWorker() throws IOException {
 		WebDriver driver = new FirefoxDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -172,7 +172,7 @@ class GarbageSystemApplicationTests {
 		Assertions.assertEquals("image", p);
 	}
 
-	@Test
+//	@Test
 	void CheckWorkerRoute() throws IOException {
 		WebDriver driver = new FirefoxDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -188,7 +188,7 @@ class GarbageSystemApplicationTests {
 		Assertions.assertEquals("image", p);
 	}
 
-	@Test
+//	@Test
 	void AdminShowBins() throws IOException {
 		WebDriver driver = new FirefoxDriver();
 		WebDriverWait wait = new WebDriverWait(driver, 20);
